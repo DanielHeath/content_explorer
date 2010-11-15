@@ -31,24 +31,42 @@ server.listen(8080, {
     }
   }
 })
-		
-socket = socket.listen(server)
-buffer = []
-		
-socket.on 'connection', (client) ->
-	client.send { buffer: buffer }
-	client.broadcast { announcement: client.sessionId + ' connected' }
 
-	client.on 'message', (message) ->
-		msg = { message: [client.sessionId, message] }
-		buffer.push(msg)
-		buffer.shift() if (buffer.length > 15)
-		client.broadcast(msg)
-
-	client.on 'disconnect', ->
-		client.broadcast { announcement: client.sessionId + ' disconnected' }
 
 class SharedCanvas
+  constructor: ->
+    @drawings = []
+    
+  drawLine: (sx, sy, ex, ey) ->
+    @drawings.push {line: [sx, sy, ex, ey]}
+    
+line = [45, 66, 78, 98]
+class MyDrawing extends SharedCanvas
+  step: ->
+    @upToStep ?= 0
+    line = p + @upToStep for p in line
+    @drawLine(line...) if (@upToStep % 7 is 2)
+    @upToStep += 1
+
+socket = io.listen(server)
+clients = []
+canvas = new MyDrawing()
+viewport = [10, 10, 200, 200]
+
+update = ->
+  canvas.step()
+  viewport = pos + 1 for pos in viewport
+  for client in clients when client?
+    client.send {worldCanvas: {serverCanvas: canvas, viewport: viewport}}
   
-  
-  
+periodicUpdate = ->
+  update()
+  setTimeout(periodicUpdate, 1000)
+
+socket.on('connection', (client) ->
+  client.send({canvas: canvas, viewport: viewport })
+  clients.push(client)
+  client.on 'disconnect', ->
+    clients[clients.indexOf(client)] = null
+)
+periodicUpdate()

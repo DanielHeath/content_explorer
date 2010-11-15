@@ -1,28 +1,18 @@
-window.message = (obj) ->
-  el = document.createElement('p')
-  (if (obj.announcement?)
-    el.innerHTML = '<em>' + esc(obj.announcement) + '</em>'
-  else if (obj.message?) 
-    el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1])
-  )
-  document.getElementById('chat').appendChild(el)
-  document.getElementById('chat').scrollTop = 1000000
-
-window.send = ->
-  val = document.getElementById('text').value
-  socket.send(val)
-  message({ message: ['you', val] })
-  document.getElementById('text').value = ''
+transform_line = (line, viewport) ->
+  line[i] - viewport[i % 2] for i in [0..3]
   
-window.esc = (msg) ->
-  return msg.replace(/</g, '&lt').replace(/>/g, '&gt')
-
-socket = new io.Socket(null, {port: 8080, rememberTransport: false})
-socket.connect()
-socket.on('message', (obj) ->
-  if (obj.buffer)
-    document.getElementById('form').style.display='block'
-    document.getElementById('chat').innerHTML = ''
-    message(i) for i in obj.buffer
-  else message(obj)
-)
+$(document).ready ->
+  canvas = document.getElementById('world')
+  ctx = canvas.getContext('2d')
+  ctx.globalCompositeOperation = 'source-over'
+  
+  socket = new io.Socket(null, {port: 8080, rememberTransport: false})
+  socket.connect()
+  socket.on('message', (obj) ->
+    console.log [obj, obj?.worldCanvas?.serverCanvas?.drawings, obj?.worldCanvas?.viewport]
+    canvas.width = canvas.width # Clears the canvas of anything drawn so far.
+    lines = transform_line(drawing.line, obj?.worldCanvas?.viewport) for drawing in (obj?.worldCanvas?.serverCanvas?.drawings || [])
+    console.log(lines)
+    ctx.strokeStyle = "black"
+    ctx.strokeText("text", line[2], line[3]) for line in lines # TODO Lookup how canvas actually draws lines!
+  )

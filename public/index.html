@@ -9,11 +9,13 @@
   <body>
     
     <h1>Sample chat client</h1>
+    <canvas id="world" width="500", height="500"></canvas>
+
     <div id="chat"><p>Connecting...</p></div>
     <form id="form" onsubmit="send(); return false">
       <input type="text" autocomplete="off" id="text"><input type="submit" value="Send">
     </form>
-    
+
     <style>
       #chat { height: 300px; overflow: auto; width: 800px; border: 1px solid #eee; font: 13px Helvetica, Arial; }
       #chat p { padding: 8px; margin: 0; }
