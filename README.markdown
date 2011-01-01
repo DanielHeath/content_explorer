@@ -1,32 +1,10 @@
-# M.F. Tanks
+# Content Explorer
 
-A simple tank battle game, where you design your tank's "AI" to survive and
-grow.
-
-The goal is to have both single- and multi-player modes:
-
-In single-player mode, you don't need any form of webserver; simply load a
-static html file with the file:// protocol, and it pulls in everything it needs
-to get a game going.
-
-In multi-player mode, you'll need a server, and some clients. The server runs
-in node.js. It serves up the game client page to players, and acts as a
-websocket server to tell the clients what to render. Clients connect and tell
-the server how they'd like their tank configured, and then render whatever the
-server tells them about.
-
-## Requirements
-
-* Node.js 0.2.3+
-* Coffeescript 0.9.4
-
-## Suggested tools
-
-* Jitter (http://github.com/TrevorBurnham/Jitter)
+Hope this helps you put together content that is meaningfully related.
 
 ## Copyright
 
-Copyright © 2010 David Goodlad (david@goodlad.ca)
+Copyright © 2010 Daniel Heath (daniel.r.heath@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

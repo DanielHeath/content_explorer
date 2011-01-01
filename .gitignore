@@ -1,3 +1,5 @@
 public/js/src/*.js
 server/*.js
+.DS_Store
+
 

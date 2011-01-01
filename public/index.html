@@ -1,31 +1,99 @@
 <!doctype html>
+<!-- TODO
+  Figure out how to scale CKEditor way down (want it to really squeeze in - maybe hide it when it doesnt have focus)
+  Open out new divs on search
+  Add rounded corners
+-->
 <html>
   <head>
-    <title>socket.io client test</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/vendor/jquery-1.4.2.min.js"></script>
-    <script src="/js/src/client.js"></script>
-  </head>
-  <body>
-    
-    <h1>Sample chat client</h1>
-    <canvas id="world" width="500", height="500"></canvas>
-
-    <div id="chat"><p>Connecting...</p></div>
-    <form id="form" onsubmit="send(); return false">
-      <input type="text" autocomplete="off" id="text"><input type="submit" value="Send">
-    </form>
-
-    <style>
-      #chat { height: 300px; overflow: auto; width: 800px; border: 1px solid #eee; font: 13px Helvetica, Arial; }
-      #chat p { padding: 8px; margin: 0; }
-      #chat p:nth-child(odd) { background: #F6F6F6; }
-      #form { width: 782px; background: #333; padding: 5px 10px; display: none; }
-      #form input[type=text] { width: 700px; padding: 5px; background: #fff; border: 1px solid #fff; }
-      #form input[type=submit] { cursor: pointer; background: #999; border: none; padding: 6px 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; margin-left: 5px; text-shadow: 0 1px 0 #fff; }
-      #form input[type=submit]:hover { background: #A2A2A2; }
-      #form input[type=submit]:active { position: relative; top: 2px; }
+    <title>Content Explorer</title>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0px; padding: 0px; overflow: hidden;}
+      .draggable { 
+        width: 20em; 
+        margin-top: 2em;
+        margin-left: 3em;
+        padding-left: 1em;
+        padding-right: 1em;
+        padding-bottom: 1em;
+        opacity: 0.9;
+        float: left;
+        border-radius: 12px;
+      }
+      .draggable.poi {
+        background-color: #6666cc;
+      }
+      .draggable.page {
+        background-color: #00cc00;
+      }
+      .draggable.searchResults {
+        background-color: #00cccc;
+      }
+      .draggable.place {
+        background-color: #CCBBBB;
+      }
+      .draggable.search {
+        background-color: #00cccc;
+      }
+      .draggable h3 { margin-left: 2em; opacity: 1;}
     </style>
     
+    
+    <script src="/js/vendor/jquery-1.4.4.min.js"></script>
+    <script src="/js/vendor/jquery-ui-1.8.7.custom.min.js"></script>
+    <script src="/js/vendor/ckeditor/ckeditor.js"></script>
+    <script src="/js/vendor/ckeditor/adapters/jquery.js"></script>
+
+    <script src="/js/src/dragcontainer.js"></script>
+    <script src="/js/src/fixture.js"></script>
+    
+  </head>
+  <body>
+    <div class="draggable search">
+      <h3 class="nodrag" >Joes Cafe</h3>
+      <textarea class="review summary narrative nodrag" >
+        Joe's is cheap and tasty
+      </textarea>
+    </div>
+    
+    <div class="draggable poi">
+      <h3 class="nodrag" >Joes Cafe</h3>
+      <textarea class="review summary narrative nodrag" >
+        Joe's is cheap and tasty
+      </textarea>
+    </div>
+    <div class="draggable poi">
+      <h3 class="nodrag">Bill and Teds Adventure tours</h3>
+      <textarea class="review summary narrative nodrag" >
+        Ted is jealous and Bill is controlling.
+      </textarea>
+    </div>
+    <div class="draggable page">
+      <h3 class="nodrag">Backpackistan/Introduction</h3>
+      <textarea class="page narrative nodrag" >
+        Backpackistan is mostly just a lake
+      </textarea>
+    </div>
+    <div class="draggable place">
+      <h3 class="nodrag">Backpackistan</h3>
+      <ul class="pois" >
+        <li><a href="http://atlas.local/pois/1">Backbencher</a></li>
+        <li><a href="http://atlas.local/pois/2">Backbencher 2: Return of the Senate</a></li>
+      </ul>
+      <ul class="pages">
+        <li><a href='http://atlas.local/pages/Backpackistan/Introduction'>Introduction</a></li>
+        <li><a href='http://atlas.local/pages/Backpackistan/Introduction/Eating'>Introduction/Eating</a></li>
+      </ul>
+        
+    </div>
+    <div class="draggable searchResults">
+      <h3>Search: ack</h3>
+      <ul>
+        <li class="result poi"><a href="http://atlas.local/pois/1">Backbencher</a></li>
+        <li class="result poi"><a href="http://atlas.local/pois/2">Backbencher 2: Return of the Senate</a></li>
+        <li class="result place"><a href="http://atlas.local/pages/Backpackistan/Introduction">Backpackistan/Introduction</a></li>
+      </ul>
+    </div>
   </body>
 </html>
